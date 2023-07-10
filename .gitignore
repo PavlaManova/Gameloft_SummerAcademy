@@ -96,3 +96,8 @@ long.*.po
 
 # OSX specific data
 .DS_Store
+.vs/CMake Overview
+*.lib
+*.cmake
+libraries/source/nvtt/src/out/build/x64-Debug/VSInheritEnvironments.txt
+*.log
