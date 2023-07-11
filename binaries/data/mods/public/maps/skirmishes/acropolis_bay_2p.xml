@@ -27343,6 +27343,13 @@
 			<Orientation y="2.54661"/>
 			<Actor seed="46268"/>
 		</Entity>
+		<Entity uid="9338">
+			<Template>skirmish/structures/default_outpost</Template>
+			<Player>1</Player>
+			<Position x="525" z="200"/>
+			<Orientation y="2.99108"/>
+			<Actor seed="13876"/>
+		</Entity>
 	</Entities>
 	<Paths/>
 </Scenario>

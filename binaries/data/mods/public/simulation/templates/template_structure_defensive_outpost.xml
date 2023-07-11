@@ -25,6 +25,11 @@
 			</RangeOverlay>
 		</Ranged>
 	</Attack>
+	<BuildingAI>
+		<DefaultArrowCount>1</DefaultArrowCount>
+		<GarrisonArrowMultiplier>1</GarrisonArrowMultiplier>
+		<GarrisonArrowClasses>Infantry</GarrisonArrowClasses>
+	</BuildingAI>
   <Auras datatype="tokens">
     structures/wall_garrisoned
   </Auras>
