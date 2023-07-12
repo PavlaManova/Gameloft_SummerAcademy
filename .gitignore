@@ -101,3 +101,8 @@ long.*.po
 *.cmake
 libraries/source/nvtt/src/out/build/x64-Debug/VSInheritEnvironments.txt
 *.log
+*.dll
+*.exp
+*.ilk
+*.pdb
+*.exe

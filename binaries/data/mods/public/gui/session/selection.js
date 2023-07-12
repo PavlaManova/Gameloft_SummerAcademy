@@ -1,5 +1,5 @@
 // Limits selection size
-var g_MaxSelectionSize = 200;
+var g_MaxSelectionSize = 300;
 
 // Alpha value of hovered/mouseover/highlighted selection overlays
 // (should probably be greater than always visible alpha value,
