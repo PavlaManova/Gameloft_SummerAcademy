@@ -61,6 +61,10 @@
     <VisibleClasses datatype="tokens">Outpost</VisibleClasses>
     <Icon>structures/outpost.png</Icon>
   </Identity>
+  <Minimap>
+    <Type>structure</Type>
+    <Icon size="26.0">output-onlinepngtools.png</Icon>
+  </Minimap>
   <Loot>
     <wood>12</wood>
   </Loot>
