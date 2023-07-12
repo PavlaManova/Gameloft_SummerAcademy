@@ -114,5 +114,9 @@ void ah_bundle_logs(FILE* f)
 
 ErrorReactionInternal ah_display_error(const wchar_t* text, size_t flags)
 {
+#ifdef DEBUG
+	return ERI_SUPPRESS;
+#else
 	return ah.display_error(text, flags);
+#endif
 }
