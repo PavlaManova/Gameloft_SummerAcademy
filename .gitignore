@@ -91,6 +91,8 @@ libraries/osx/vorbis/
 libraries/osx/wxwidgets/
 libraries/osx/zlib/
 
+libraries/win32/wxwidgets/
+
 # "long" translation files
 long.*.po
 
@@ -106,3 +108,4 @@ libraries/source/nvtt/src/out/build/x64-Debug/VSInheritEnvironments.txt
 *.ilk
 *.pdb
 *.exe
+*.pdb

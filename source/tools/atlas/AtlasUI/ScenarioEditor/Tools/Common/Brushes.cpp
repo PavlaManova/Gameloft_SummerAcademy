@@ -30,7 +30,7 @@ static Brush* g_Brush_CurrentlyActive = NULL; // only one brush can be active at
 const float Brush::STRENGTH_MULTIPLIER = 1024.f;
 
 Brush::Brush()
-: m_Shape(CIRCLE), m_Size(4), m_Strength(1.f), m_IsActive(false)
+: m_Shape(CIRCLE), m_Size(16), m_Strength(1.f), m_IsActive(false)
 {
 }
 
@@ -65,6 +65,8 @@ int Brush::GetWidth() const
 	case CIRCLE:
 		return m_Size;
 	case SQUARE:
+		return m_Size;
+	case RIDGE:
 		return m_Size;
 	default:
 		wxFAIL;
@@ -125,6 +127,14 @@ std::vector<float> Brush::GetData() const
 					data[i++] = 1.f;
 			break;
 		}
+	case RIDGE:
+	{
+		int i = 0;
+		for (int y = 0; y < height; ++y)
+			for (int x = 0; x < width; ++x)
+				data[i++] = 1.f;
+		break;
+	}
 	}
 
 	return data;
@@ -149,6 +159,12 @@ void Brush::SetCircle(int size)
 void Brush::SetSquare(int size)
 {
 	m_Shape = SQUARE;
+	m_Size = size;
+}
+
+void Brush::SetRidge(int size)
+{
+	m_Shape = RIDGE;
 	m_Size = size;
 }
 
@@ -236,6 +252,7 @@ void Brush::CreateUI(wxWindow* parent, wxSizer* sizer)
 	wxArrayString shapes; // Must match order of BrushShape enum
 	shapes.Add(_("Circle"));
 	shapes.Add(_("Square"));
+	shapes.Add(_("Ridge"));
 	// TODO (maybe): get rid of the extra static box, by not using wxRadioBox
 	sizer->Add(new BrushShapeCtrl(parent, shapes, *this), wxSizerFlags().Expand());
 

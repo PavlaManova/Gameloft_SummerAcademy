@@ -197,6 +197,11 @@ size_t TaskManager::GetNumberOfWorkers() const
 	return m->m_Workers.size();
 }
 
+//void TaskManager::setMinWorkers(int count)
+//{
+//	//MIN_WORKERS = count;
+//}
+
 void TaskManager::DoPushTask(std::function<void()>&& task, TaskPriority priority)
 {
 	m->PushTask(std::move(task), priority);
@@ -236,10 +241,19 @@ bool TaskManager::Impl::PopTask(std::function<void()>& taskOut)
 	return false;
 }
 
-void TaskManager::Initialise()
+void TaskManager::Initialise(size_t size)
 {
 	if (!g_TaskManager)
-		g_TaskManager = std::make_unique<TaskManager>();
+	{
+		if (size == -1)
+		{
+			g_TaskManager = std::make_unique<TaskManager>();
+		}
+		else
+		{
+			g_TaskManager = std::make_unique<TaskManager>(size);
+		}
+	}
 }
 
 TaskManager& TaskManager::Instance()

@@ -47,7 +47,7 @@ public:
 	TaskManager& operator=(const TaskManager&) = delete;
 	TaskManager& operator=(TaskManager&&) = delete;
 
-	static void Initialise();
+	static void Initialise(size_t size);
 	static TaskManager& Instance();
 
 	/**
@@ -70,9 +70,9 @@ public:
 		DoPushTask(ret.Wrap(std::move(func)), priority);
 		return ret;
 	}
-
+TaskManager(size_t numberOfWorkers);
 private:
-	TaskManager(size_t numberOfWorkers);
+	
 
 	void DoPushTask(std::function<void()>&& task, TaskPriority priority);
 

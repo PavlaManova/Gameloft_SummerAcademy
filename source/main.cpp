@@ -517,6 +517,9 @@ static void RunGameOrAtlas(const PS::span<const char* const> argv)
 	if (args.Has("unique-logs"))
 		g_UniqueLogPostfix = L"_" + std::to_wstring(std::time(nullptr)) + L"_" + std::to_wstring(getpid());
 
+	
+		
+
 	const bool isVisualReplay = args.Has("replay-visual");
 	const bool isNonVisualReplay = args.Has("replay");
 	const bool isNonVisual = args.Has("autostart-nonvisual");
@@ -567,8 +570,18 @@ static void RunGameOrAtlas(const PS::span<const char* const> argv)
 	ScriptEngine scriptEngine;
 	CXeromyces::Startup();
 
-	// Initialise the global task manager at this point (JS & Profiler2 are set up).
-	Threading::TaskManager::Initialise();
+	
+
+	if (args.Has("threads"))
+	{
+		Threading::TaskManager::Initialise((size_t)args.Get("threads")[0]);
+		//Threading::TaskManager(size); //g_UniqueLogPostfix = L"_" + std::to_wstring(std::time(nullptr)) + L"_" + std::to_wstring(getpid());
+	}
+	else
+	{
+		// Initialise the global task manager at this point (JS & Profiler2 are set up).
+		Threading::TaskManager::Initialise(-1);
+	}
 
 	if (ATLAS_RunIfOnCmdLine(args, false))
 	{
