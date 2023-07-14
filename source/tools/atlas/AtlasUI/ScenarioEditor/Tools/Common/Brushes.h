@@ -42,6 +42,7 @@ public:
 	void SetCircle(int size);
 	void SetSquare(int size);
 	void SetRidge(int size);
+	void SetCross(int size);
 
 	float GetStrength() const;
 	void SetStrength(float strength);
@@ -56,7 +57,7 @@ private:
 	// If active, send SetBrush message to the game
 	void Send();
 
-	enum BrushShape { CIRCLE = 0, SQUARE, RIDGE};
+	enum BrushShape { CIRCLE = 0, SQUARE, RIDGE, CROSS};
 	BrushShape m_Shape;
 	int m_Size;
 	float m_Strength;

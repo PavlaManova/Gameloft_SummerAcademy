@@ -68,6 +68,8 @@ int Brush::GetWidth() const
 		return m_Size;
 	case RIDGE:
 		return m_Size;
+	case CROSS:
+		return m_Size;
 	default:
 		wxFAIL;
 		return -1;
@@ -129,10 +131,64 @@ std::vector<float> Brush::GetData() const
 		}
 	case RIDGE:
 	{
-		int i = 0;
+		/*int i = 0;
+		double dump = 0;
 		for (int y = 0; y < height; ++y)
+		{
+
 			for (int x = 0; x < width; ++x)
-				data[i++] = 1.f;
+			{
+				dump = (double)(x * x + y * y) / (height * height)*M_PI;
+				data[i++] = (cos(dump)*2);
+			}
+				
+		}
+		break;*/
+		int i = 0;
+		// All calculations are done in units of half-tiles, since that
+		// is the required precision
+		int mid_x = m_Size - 1;
+		int mid_y = m_Size - 1;
+		for (int y = 0; y < m_Size; ++y)
+		{
+			for (int x = 0; x < m_Size; ++x)
+			{
+				float dist_sq = // scaled to 0 in centre, 1 on edge
+					((2 * x - mid_x) * (2 * x - mid_x) +
+						(2 * y - mid_y) * (2 * y - mid_y)) / (float)(m_Size * m_Size);
+				if (dist_sq <= 1.f)
+					data[i++] = (sqrtf(2.f - dist_sq) - 1.f) / (sqrt(2.f) - 1.f);
+				else
+				{
+					data[i++] = 0.f;
+					continue;
+				}
+				if (abs(width-x-y)<6+ (float)(rand()) / (float)(RAND_MAX))
+					data[i - 1] += 0.1f*sin(x - y) + (float)(rand()) / (float)(RAND_MAX*5);
+			}
+		}
+		break;
+	}
+	case CROSS:
+	{
+		int i = 0;
+		fill(data.begin(), data.end(), 0.f);
+		int offset = floor(width / 4);
+
+		for (int y = 0; y < height; ++y)
+		{
+			for (int x = 0; x < width; ++x)
+			{
+				if ((x >= y - offset && x <= y + offset) || (x <= -y + (m_Size-1) + offset && x >= -y + (m_Size - 1) - offset))
+				{
+					data[i++] = 1.0f;
+				}
+				else
+				{
+					i++;
+				}
+			}
+		}
 		break;
 	}
 	}
@@ -165,6 +221,12 @@ void Brush::SetSquare(int size)
 void Brush::SetRidge(int size)
 {
 	m_Shape = RIDGE;
+	m_Size = size;
+}
+
+void Brush::SetCross(int size)
+{
+	m_Shape = CROSS;
 	m_Size = size;
 }
 
@@ -253,6 +315,7 @@ void Brush::CreateUI(wxWindow* parent, wxSizer* sizer)
 	shapes.Add(_("Circle"));
 	shapes.Add(_("Square"));
 	shapes.Add(_("Ridge"));
+	shapes.Add(_("Cross"));
 	// TODO (maybe): get rid of the extra static box, by not using wxRadioBox
 	sizer->Add(new BrushShapeCtrl(parent, shapes, *this), wxSizerFlags().Expand());
 
