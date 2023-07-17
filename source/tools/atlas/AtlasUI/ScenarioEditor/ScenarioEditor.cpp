@@ -48,6 +48,9 @@
 #include "Tools/Common/Tools.h"
 #include "Tools/Common/Brushes.h"
 #include "Tools/Common/MiscState.h"
+#include "../../../../simulation2/helpers/Selection.h"
+#include "../../../../source/ps/Game.h"
+#include "../../../../source/graphics/GameView.h"
 
 static HighResTimer g_Timer;
 
@@ -294,11 +297,21 @@ private:
 			}
 		}
 
+		bool rightDown = evt.RightDown(),
+			leftDown = evt.LeftDown();
+
 		// Button down and double click appear to be mutually exclusive events,
 		//   meaning a second button down event is not sent before a double click
-		if (evt.ButtonDown() || evt.ButtonDClick())
+		if (rightDown || leftDown || evt.ButtonDClick())
 		{
 			g_Clicks = evt.ButtonDClick() ? 2 : 1;
+			if (rightDown)
+			{
+				//POST_COMMAND(DeleteObject,vector<entity_pos_t> (
+				EntitySelection::PickEntityAtPoint(*g_Game->GetSimulation2(), *g_Game->GetView()->GetCamera(), evt.GetX(), evt.GetY(), 0, false);//);
+			}
+			
+
 			POST_MESSAGE(GuiMouseButtonEvent, (evt.GetButton(), true, evt.GetPosition(), g_Clicks));
 		}
 		else if (evt.ButtonUp())

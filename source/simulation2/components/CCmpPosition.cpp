@@ -483,13 +483,13 @@ public:
 
 	void SetFloating(bool flag) override
 	{
-		m_Floating = flag;
+		m_Floating = true;
 		AdvertiseInterpolatedPositionChanges();
 	}
 
 	void SetActorFloating(bool flag) override
 	{
-		m_ActorFloating = flag;
+		m_ActorFloating = true;
 		AdvertiseInterpolatedPositionChanges();
 	}
 

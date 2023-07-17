@@ -225,7 +225,11 @@ public:
 	{
 		bool OnMouse(TransformObject* obj, wxMouseEvent& evt)
 		{
-			if (evt.LeftDClick() && AtlasMessage::ObjectIDIsValid(obj->m_lastSelected))
+			if(evt.RightDown() && AtlasMessage::ObjectIDIsValid(obj->m_lastSelected))
+			{
+				POST_COMMAND(DeleteObjects, (g_SelectedObjects));
+			}
+			else if (evt.LeftDClick() && AtlasMessage::ObjectIDIsValid(obj->m_lastSelected))
 			{
 				SET_STATE(SelectSimilar);
 				return true;
