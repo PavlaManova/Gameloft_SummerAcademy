@@ -163,7 +163,7 @@ std::vector<float> Brush::GetData() const
 					data[i++] = 0.f;
 					continue;
 				}
-				if (abs(width-x-y)<6+ (float)(rand()) / (float)(RAND_MAX))
+				if (abs(width-x-y)< 6 + (float)(rand()) / (float)(RAND_MAX))
 					data[i - 1] += 0.1f*sin(x - y) + (float)(rand()) / (float)(RAND_MAX*5);
 			}
 		}

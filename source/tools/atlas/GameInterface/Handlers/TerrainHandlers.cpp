@@ -35,12 +35,18 @@
 #include "simulation2/components/ICmpPathfinder.h"
 #include "simulation2/components/ICmpTerrain.h"
 #include "simulation2/helpers/Grid.h"
+#include "simulation2/components/ICmpWaterManager.h"
+#include "renderer/WaterManager.h"
+
 
 #include "../Brushes.h"
 #include "../DeltaArray.h"
 #include "../View.h"
 
 #include <queue>
+#include <lib/tex/tex_dds.cpp>
+#include <boost/function/function_base.hpp>
+#include "../../../../../libraries/source/spidermonkey/include-win32-debug/mozilla/CompactPair.h"
 
 namespace AtlasMessage
 {
@@ -517,6 +523,7 @@ BEGIN_COMMAND(FillTerrain)
 
 		ssize_t tiles = m_TerrainDelta.GetTilesPerSide();
 
+
 		// Simple 4-way flood fill algorithm using queue and a grid to keep track of visited tiles,
 		//	almost as fast as loop for filling whole map, much faster for small patches
 		SparseGrid<bool> visited(tiles, tiles);
@@ -526,6 +533,15 @@ BEGIN_COMMAND(FillTerrain)
 		queue.push(std::make_pair((u16)x0, (u16)y0));
 		visited.set(x0, y0, true);
 
+		CmpPtr<ICmpWaterManager> cmpWaterManager(*g_Game->GetSimulation2(), SYSTEM_ENTITY);
+			ENSURE(cmpWaterManager);
+
+			CTerrain* terrain = g_Game->GetWorld()->GetTerrain();
+			if (!terrain || !terrain->GetHeightMap())
+				return;
+
+		#define ABOVEWATER(x, z) (terrain->GetVertexGroundLevel(x,z) >= cmpWaterManager->GetExactWaterLevel(x,z))
+			
 		while(!queue.empty())
 		{
 			// Check front of queue
@@ -533,6 +549,9 @@ BEGIN_COMMAND(FillTerrain)
 			queue.pop();
 			u16 i = t.first;
 			u16 j = t.second;
+			
+			if (!ABOVEWATER(i, j))
+				continue;
 
 			if (m_TerrainDelta.GetTexEntry(i, j) == replacedTex)
 			{
@@ -583,5 +602,6 @@ BEGIN_COMMAND(FillTerrain)
 	}
 };
 END_COMMAND(FillTerrain)
+#undef ABOVEWATER
 
 } // namespace AtlasMessage
