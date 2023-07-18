@@ -6,8 +6,7 @@
 const UPGRADING_NOT_STARTED = -2;
 const UPGRADING_CHOSEN_OTHER = -1;
 
-function canMoveSelectionIntoFormation(formationTemplate)
-{
+function canMoveSelectionIntoFormation(formationTemplate) {
 	if (formationTemplate == NULL_FORMATION)
 		return true;
 	if (!(formationTemplate in g_canMoveIntoFormation))
@@ -19,8 +18,7 @@ function canMoveSelectionIntoFormation(formationTemplate)
 	return g_canMoveIntoFormation[formationTemplate];
 }
 
-function hasSameRestrictionCategory(templateName1, templateName2)
-{
+function hasSameRestrictionCategory(templateName1, templateName2) {
 	let template1 = GetTemplateData(templateName1);
 	let template2 = GetTemplateData(templateName2);
 
@@ -36,8 +34,7 @@ function hasSameRestrictionCategory(templateName1, templateName2)
 /**
  * Returns a "color:255 0 0 Alpha" string based on how many resources are needed.
  */
-function resourcesToAlphaMask(neededResources)
-{
+function resourcesToAlphaMask(neededResources) {
 	let totalCost = 0;
 	for (let resource in neededResources)
 		totalCost += +neededResources[resource];
@@ -45,50 +42,45 @@ function resourcesToAlphaMask(neededResources)
 	return "color:255 0 0 " + Math.min(125, Math.round(+totalCost / 10) + 50);
 }
 
-function getStanceDisplayName(name)
-{
-	switch (name)
-	{
-	case "violent":
-		return translateWithContext("stance", "Violent");
-	case "aggressive":
-		return translateWithContext("stance", "Aggressive");
-	case "defensive":
-		return translateWithContext("stance", "Defensive");
-	case "passive":
-		return translateWithContext("stance", "Passive");
-	case "standground":
-		return translateWithContext("stance", "Standground");
-	default:
-		warn("Internationalization: Unexpected stance found: " + name);
-		return name;
+function getStanceDisplayName(name) {
+	switch (name) {
+		case "violent":
+			return translateWithContext("stance", "Violent");
+		case "aggressive":
+			return translateWithContext("stance", "Aggressive");
+		case "defensive":
+			return translateWithContext("stance", "Defensive");
+		case "passive":
+			return translateWithContext("stance", "Passive");
+		case "standground":
+			return translateWithContext("stance", "Standground");
+		default:
+			warn("Internationalization: Unexpected stance found: " + name);
+			return name;
 	}
 }
 
-function getStanceTooltip(name)
-{
-	switch (name)
-	{
-	case "violent":
-		return translateWithContext("stance", "Attack nearby opponents, focus on attackers and chase while visible");
-	case "aggressive":
-		return translateWithContext("stance", "Attack nearby opponents");
-	case "defensive":
-		return translateWithContext("stance", "Attack nearby opponents, chase a short distance and return to the original location");
-	case "passive":
-		return translateWithContext("stance", "Flee if attacked");
-	case "standground":
-		return translateWithContext("stance", "Attack opponents in range, but don't move");
-	default:
-		return "";
+function getStanceTooltip(name) {
+	switch (name) {
+		case "violent":
+			return translateWithContext("stance", "Attack nearby opponents, focus on attackers and chase while visible");
+		case "aggressive":
+			return translateWithContext("stance", "Attack nearby opponents");
+		case "defensive":
+			return translateWithContext("stance", "Attack nearby opponents, chase a short distance and return to the original location");
+		case "passive":
+			return translateWithContext("stance", "Flee if attacked");
+		case "standground":
+			return translateWithContext("stance", "Attack opponents in range, but don't move");
+		default:
+			return "";
 	}
 }
 
 /**
  * Format entity count/limit message for the tooltip
  */
-function formatLimitString(trainEntLimit, trainEntCount, trainEntLimitChangers)
-{
+function formatLimitString(trainEntLimit, trainEntCount, trainEntLimitChangers) {
 	if (trainEntLimit == undefined)
 		return "";
 
@@ -100,8 +92,7 @@ function formatLimitString(trainEntLimit, trainEntCount, trainEntLimitChangers)
 	if (trainEntCount >= trainEntLimit)
 		text = objectionFont(text);
 
-	for (var c in trainEntLimitChangers)
-	{
+	for (var c in trainEntLimitChangers) {
 		if (!trainEntLimitChangers[c])
 			continue;
 
@@ -126,16 +117,14 @@ function formatLimitString(trainEntLimit, trainEntCount, trainEntLimitChangers)
  *
  * @return {string} - The string to show the user with information regarding the limit of this template.
  */
-function formatMatchLimitString(matchEntLimit, matchEntCount, type)
-{
+function formatMatchLimitString(matchEntLimit, matchEntCount, type) {
 	if (matchEntLimit == undefined)
 		return "";
 
 	let passedLimit = matchEntCount >= matchEntLimit;
 	let count = matchEntLimit - matchEntCount;
 	let text;
-	if (type == "build")
-	{
+	if (type == "build") {
 		if (matchEntLimit == 1)
 			text = translate("Can be constructed only once.");
 		else if (passedLimit)
@@ -143,14 +132,13 @@ function formatMatchLimitString(matchEntLimit, matchEntCount, type)
 				"Could only be constructed %(limit)s time.",
 				"Could only be constructed %(limit)s times.",
 				matchEntLimit),
-			{ "limit": matchEntLimit });
+				{ "limit": matchEntLimit });
 		else
 			text = sprintf(translatePlural("Can be constructed %(count)s more time.", "Can be constructed %(count)s more times.", count), {
 				"count": count
 			});
 	}
-	else if (type == "training")
-	{
+	else if (type == "training") {
 		if (passedLimit)
 			text = sprintf(translatePlural("Could only be trained once.", "Could only be trained %(limit)s times.", matchEntLimit), {
 				"limit": matchEntLimit
@@ -162,8 +150,7 @@ function formatMatchLimitString(matchEntLimit, matchEntCount, type)
 				"count": count
 			});
 	}
-	else
-	{
+	else {
 		if (passedLimit)
 			text = sprintf(translatePlural("Could only be created once.", "Could only be created %(limit)s times.", matchEntLimit), {
 				"limit": matchEntLimit
@@ -189,8 +176,7 @@ function formatMatchLimitString(matchEntLimit, matchEntCount, type)
  * buildingsCountToTrainFullBatch = 1, fullBatchSize = 15, remainderBatch = 12:
  * "Shift-click to train 27 (15 + 12)"
  */
-function formatBatchTrainingString(buildingsCountToTrainFullBatch, fullBatchSize, remainderBatch)
-{
+function formatBatchTrainingString(buildingsCountToTrainFullBatch, fullBatchSize, remainderBatch) {
 	var totalBatchTrainingCount = buildingsCountToTrainFullBatch * fullBatchSize + remainderBatch;
 
 	// Don't show the batch training tooltip if either units of this type can't be trained at all
@@ -212,7 +198,7 @@ function formatBatchTrainingString(buildingsCountToTrainFullBatch, fullBatchSize
 	// another with a partial batch
 	let batchString;
 	if (buildingsCountToTrainFullBatch > 1 ||
-	    buildingsCountToTrainFullBatch == 1 && remainderBatch > 0)
+		buildingsCountToTrainFullBatch == 1 && remainderBatch > 0)
 		if (remainderBatch > 0)
 			batchString = translate("%(action)s to train %(number)s (%(fullBatch)s + %(remainderBatch)s).");
 		else
@@ -238,39 +224,75 @@ function formatBatchTrainingString(buildingsCountToTrainFullBatch, fullBatchSize
  * When the camera is already roughly at that location, jump back to where it was previously.
  */
 var g_JumpCameraPositions = [];
-var g_JumpCameraLast;
+var g_JumpCameraRotations = [];
+var g_JumpCameraZoom = [];
+var g_JumpCameraFOV = [];
 
-function jumpCamera(index)
-{
+var g_JumpCameraLastPos;
+var g_JumpCameraFOVLast;
+var g_JumpCameraZoomLast;
+var g_JumpCameraRotationLast;
+
+function jumpCamera(index) {
+
 	let position = g_JumpCameraPositions[index];
+	let rotation = g_JumpCameraRotations[index];
+	let zoom = g_JumpCameraZoom[index];
+	let fov = g_JumpCameraFOV[index];
+
 	if (!position)
 		return;
 
 	let threshold = Engine.ConfigDB_GetValue("user", "gui.session.camerajump.threshold");
-	let cameraPivot = Engine.GetCameraPivot();
-	if (g_JumpCameraLast &&
-	    Math.abs(cameraPivot.x - position.x) < threshold &&
-	    Math.abs(cameraPivot.z - position.z) < threshold)
-	{
-		Engine.CameraMoveTo(g_JumpCameraLast.x, g_JumpCameraLast.z);
+	let cameraPivot = Engine.GetCameraPosition();
+	if (g_JumpCameraLastPos &&
+		Math.abs(cameraPivot.x - position.x) < threshold &&
+		Math.abs(cameraPivot.z - position.z) < threshold) {
+		// error(1);
+		Engine.SetCameraData(g_JumpCameraLastPos.x, g_JumpCameraLastPos.y, g_JumpCameraLastPos.z,
+			g_JumpCameraRotationLast.x, g_JumpCameraRotationLast.y,
+			g_JumpCameraZoomLast, g_JumpCameraFOVLast);
 	}
-	else
-	{
-		g_JumpCameraLast = cameraPivot;
-		Engine.CameraMoveTo(position.x, position.z);
+	else {
+
+		//  &&
+		// 	Math.abs(cameraPivot.x - g_JumpCameraLastPos.x) < threshold &&
+		// 	Math.abs(cameraPivot.z - g_JumpCameraLastPos.z) < threshold));
+		// error(Math.abs(cameraPivot.x - position[0]) < threshold);
+		// error(Math.abs(cameraPivot.z - position[2]) < threshold);
+
+		// var posData = [];
+		// posData.push(Engine.GetCameraPosition().x, Engine.GetCameraPosition().y, Engine.GetCameraPosition().z, Engine.GetCameraRotation().x,
+		// 	Engine.GetCameraRotation().y, Engine.GetCameraZoom(), Engine.GetCameraFOV());
+		// g_JumpCameraLastData = posData;
+		g_JumpCameraLastPos = Engine.GetCameraPosition();
+		g_JumpCameraFOVLast = Engine.GetCameraFOV();
+		g_JumpCameraZoomLast = Engine.GetCameraZoom();
+		g_JumpCameraRotationLast = Engine.GetCameraRotation();
+
+		Engine.SetCameraData(position.x, position.y, position.z,
+			rotation.x, rotation.y,
+			zoom, fov);
 	}
 }
 
-function setJumpCamera(index)
-{
-	g_JumpCameraPositions[index] = Engine.GetCameraPivot();
+function setJumpCamera(index) {
+
+	// var posData = [];
+
+	// posData.push(Engine.GetCameraPosition().x, Engine.GetCameraPosition().y, Engine.GetCameraPosition().z, Engine.GetCameraRotation().x, Engine.GetCameraRotation().y, Engine.GetCameraZoom(),
+	// 	Engine.GetCameraFOV());
+	g_JumpCameraPositions[index] = Engine.GetCameraPosition();
+	g_JumpCameraRotations[index] = Engine.GetCameraRotation();
+	g_JumpCameraZoom[index] = Engine.GetCameraZoom();
+	g_JumpCameraFOV[index] = Engine.GetCameraFOV();
+
 }
 
 /**
  * Called by GUI when user clicks a research button.
  */
-function addResearchToQueue(entity, researchType)
-{
+function addResearchToQueue(entity, researchType) {
 	Engine.PostNetworkCommand({
 		"type": "research",
 		"entity": entity,
@@ -282,8 +304,7 @@ function addResearchToQueue(entity, researchType)
 /**
  * Called by GUI when user clicks a production queue item.
  */
-function removeFromProductionQueue(entity, id)
-{
+function removeFromProductionQueue(entity, id) {
 	Engine.PostNetworkCommand({
 		"type": "stop-production",
 		"entity": entity,
@@ -294,18 +315,15 @@ function removeFromProductionQueue(entity, id)
 /**
  * Called by unit selection buttons.
  */
-function makePrimarySelectionGroup(templateName)
-{
+function makePrimarySelectionGroup(templateName) {
 	g_Selection.makePrimarySelection(templateName);
 }
 
-function removeFromSelectionGroup(templateName)
-{
+function removeFromSelectionGroup(templateName) {
 	g_Selection.removeGroupFromSelection(templateName);
 }
 
-function performCommand(entStates, commandName)
-{
+function performCommand(entStates, commandName) {
 	if (!entStates.length)
 		return;
 
@@ -313,8 +331,7 @@ function performCommand(entStates, commandName)
 		g_EntityCommands[commandName].execute(entStates);
 }
 
-function performFormation(entities, formationTemplate)
-{
+function performFormation(entities, formationTemplate) {
 	if (!entities)
 		return;
 
@@ -325,8 +342,7 @@ function performFormation(entities, formationTemplate)
 	});
 }
 
-function performStance(entities, stanceName)
-{
+function performStance(entities, stanceName) {
 	if (!entities)
 		return;
 
@@ -337,8 +353,7 @@ function performStance(entities, stanceName)
 	});
 }
 
-function lockGate(lock)
-{
+function lockGate(lock) {
 	Engine.PostNetworkCommand({
 		"type": "lock-gate",
 		"entities": g_Selection.toList(),
@@ -346,8 +361,7 @@ function lockGate(lock)
 	});
 }
 
-function packUnit(pack)
-{
+function packUnit(pack) {
 	Engine.PostNetworkCommand({
 		"type": "pack",
 		"entities": g_Selection.toList(),
@@ -356,8 +370,7 @@ function packUnit(pack)
 	});
 }
 
-function cancelPackUnit(pack)
-{
+function cancelPackUnit(pack) {
 	Engine.PostNetworkCommand({
 		"type": "cancel-pack",
 		"entities": g_Selection.toList(),
@@ -366,8 +379,7 @@ function cancelPackUnit(pack)
 	});
 }
 
-function upgradeEntity(Template, selection)
-{
+function upgradeEntity(Template, selection) {
 	Engine.PostNetworkCommand({
 		"type": "upgrade",
 		"entities": selection,
@@ -376,8 +388,7 @@ function upgradeEntity(Template, selection)
 	});
 }
 
-function cancelUpgradeEntity()
-{
+function cancelUpgradeEntity() {
 	Engine.PostNetworkCommand({
 		"type": "cancel-upgrade",
 		"entities": g_Selection.toList(),
@@ -389,8 +400,7 @@ function cancelUpgradeEntity()
  * Set the camera to follow the given entity if it's a unit.
  * Otherwise stop following.
  */
-function setCameraFollow(entity)
-{
+function setCameraFollow(entity) {
 	let entState = entity && GetEntityState(entity);
 	if (entState && hasClass(entState, "Unit"))
 		Engine.CameraFollow(entity);
@@ -398,8 +408,7 @@ function setCameraFollow(entity)
 		Engine.CameraFollow(0);
 }
 
-function stopUnits(entities)
-{
+function stopUnits(entities) {
 	Engine.PostNetworkCommand({
 		"type": "stop",
 		"entities": entities,
@@ -407,8 +416,7 @@ function stopUnits(entities)
 	});
 }
 
-function unloadTemplate(template, owner)
-{
+function unloadTemplate(template, owner) {
 	Engine.PostNetworkCommand({
 		"type": "unload-template",
 		"all": Engine.HotkeyIsPressed("session.unloadtype"),
@@ -422,8 +430,7 @@ function unloadTemplate(template, owner)
 	});
 }
 
-function unloadAll()
-{
+function unloadAll() {
 	const garrisonHolders = g_Selection.filter(e => {
 		let state = GetEntityState(e);
 		return state && !!state.garrisonHolder;
@@ -435,8 +442,7 @@ function unloadAll()
 	let ownEnts = [];
 	let otherEnts = [];
 
-	for (let ent of garrisonHolders)
-	{
+	for (let ent of garrisonHolders) {
 		if (controlsPlayer(GetEntityState(ent).player))
 			ownEnts.push(ent);
 		else
@@ -456,8 +462,7 @@ function unloadAll()
 		});
 }
 
-function unloadAllTurrets()
-{
+function unloadAllTurrets() {
 	const turretHolders = g_Selection.filter(e => {
 		let state = GetEntityState(e);
 		return state && !!state.turretHolder;
@@ -468,13 +473,11 @@ function unloadAllTurrets()
 
 	let ownedHolders = [];
 	let ejectables = [];
-	for (let ent of turretHolders)
-	{
+	for (let ent of turretHolders) {
 		let turretHolderState = GetEntityState(ent);
 		if (controlsPlayer(turretHolderState.player))
 			ownedHolders.push(ent);
-		else
-		{
+		else {
 			for (let turret of turretHolderState.turretHolder.turretPoints.map(tp => tp.entity))
 				if (turret && controlsPlayer(GetEntityState(turret).player))
 					ejectables.push(turret);
@@ -494,8 +497,7 @@ function unloadAllTurrets()
 		});
 }
 
-function leaveTurretPoints()
-{
+function leaveTurretPoints() {
 	const entities = g_Selection.filter(entity => {
 		let entState = GetEntityState(entity);
 		return entState && entState.turretable &&
@@ -508,8 +510,7 @@ function leaveTurretPoints()
 	});
 }
 
-function backToWork()
-{
+function backToWork() {
 	Engine.PostNetworkCommand({
 		"type": "back-to-work",
 		// Filter out all entities that can't go back to work.
@@ -520,8 +521,7 @@ function backToWork()
 	});
 }
 
-function removeGuard()
-{
+function removeGuard() {
 	Engine.PostNetworkCommand({
 		"type": "remove-guard",
 		// Filter out all entities that are currently guarding/escorting.
@@ -532,8 +532,7 @@ function removeGuard()
 	});
 }
 
-function raiseAlert()
-{
+function raiseAlert() {
 	Engine.PostNetworkCommand({
 		"type": "alert-raise",
 		"entities": g_Selection.filter(ent => {
@@ -543,8 +542,7 @@ function raiseAlert()
 	});
 }
 
-function endOfAlert()
-{
+function endOfAlert() {
 	Engine.PostNetworkCommand({
 		"type": "alert-end",
 		"entities": g_Selection.filter(ent => {
@@ -554,8 +552,7 @@ function endOfAlert()
 	});
 }
 
-function turnAutoQueueOn()
-{
+function turnAutoQueueOn() {
 	Engine.PostNetworkCommand({
 		"type": "autoqueue-on",
 		"entities": g_Selection.filter(ent => {
@@ -566,8 +563,7 @@ function turnAutoQueueOn()
 	});
 }
 
-function turnAutoQueueOff()
-{
+function turnAutoQueueOff() {
 	Engine.PostNetworkCommand({
 		"type": "autoqueue-off",
 		"entities": g_Selection.filter(ent => {

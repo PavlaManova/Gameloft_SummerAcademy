@@ -48,6 +48,7 @@ public:
 
 	virtual void SetCamera(const CVector3D& pos, float rotX, float rotY, float zoom) = 0;
 	virtual void SetFOV(const float newVal) = 0;
+	virtual float GetFOV() = 0;
 	virtual void MoveCameraTarget(const CVector3D& target) = 0;
 	virtual void ResetCameraTarget(const CVector3D& target) = 0;
 	virtual void FollowEntity(entity_id_t entity, bool firstPerson) = 0;

@@ -721,3 +721,8 @@ void CCameraController::SetFOV(const float newValue)
 		m_ViewFOV = newValue;
 	}
 }
+
+float CCameraController::GetFOV()
+{
+	return m_ViewFOV;
+}

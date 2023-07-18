@@ -98,7 +98,7 @@ JS::Value GetCameraPivot(const ScriptRequest& rq)
 
 	const CVector3D pivot = g_Game->GetView()->GetCameraPivot();
 	JS::RootedValue pivotValue(rq.cx);
-	Script::CreateObject(rq, &pivotValue, "x", pivot.X, "z", pivot.Z);
+	Script::CreateObject(rq, &pivotValue, "x", pivot.X, "y", pivot.Y, "z", pivot.Z);
 	return pivotValue;
 }
 
@@ -144,7 +144,7 @@ void SetCameraTarget(float x, float y, float z)
 /**
  * Set the data (position, orientation and zoom) of the camera.
  */
-void SetCameraData(entity_pos_t x, entity_pos_t y, entity_pos_t z, entity_pos_t rotx, entity_pos_t roty, entity_pos_t zoom)
+void SetCameraData(entity_pos_t x, entity_pos_t y, entity_pos_t z, entity_pos_t rotx, entity_pos_t roty, entity_pos_t zoom, const float fov)
 {
 	if (!g_Game || !g_Game->GetView())
 		return;
@@ -152,6 +152,14 @@ void SetCameraData(entity_pos_t x, entity_pos_t y, entity_pos_t z, entity_pos_t 
 	CVector3D pos(x.ToFloat(), y.ToFloat(), z.ToFloat());
 
 	g_Game->GetView()->SetCamera(pos, rotx.ToFloat(), roty.ToFloat(), zoom.ToFloat());
+	g_Game->GetView()->SetCameraFov(fov);
+}
+
+float GetCameraFOV()
+{
+	if (!g_Game || !g_Game->GetView())
+		return 0.8f;
+	return g_Game->GetView()->GetCameraFov();
 }
 
 /**
@@ -203,6 +211,7 @@ void RegisterScriptFunctions(const ScriptRequest& rq)
 	ScriptFunction::Register<&CameraMoveTo>(rq, "CameraMoveTo");
 	ScriptFunction::Register<&SetCameraTarget>(rq, "SetCameraTarget");
 	ScriptFunction::Register<&SetCameraData>(rq, "SetCameraData");
+	ScriptFunction::Register<&GetCameraFOV>(rq, "GetCameraFOV");
 	ScriptFunction::Register<&CameraFollow>(rq, "CameraFollow");
 	ScriptFunction::Register<&CameraFollowFPS>(rq, "CameraFollowFPS");
 	ScriptFunction::Register<&GetFollowedEntity>(rq, "GetFollowedEntity");

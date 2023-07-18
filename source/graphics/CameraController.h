@@ -57,6 +57,7 @@ public:
 	}
 
 	void SetFOV(const float) override;
+	float GetFOV() override;
 
 private:
 	CVector3D GetSmoothPivot(CCamera &camera) const;
