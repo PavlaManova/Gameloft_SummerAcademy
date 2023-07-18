@@ -138,6 +138,14 @@
 			"camera.jump.set.4": {
 				"name": "Set camera jump 4",
 				"desc": "Set camera jump position 4."
+			},
+			"camera.fovX.increase": {
+				"name": "FOV Increase",
+				"desc": "Toggles camera's field of view."
+			},
+			"camera.fovX.decrease": {
+				"name": "FOV Decrease",
+				"desc": "Toggles camera's field of view."
 			}
 		}
 	}

@@ -56,6 +56,8 @@ public:
 		m_ConstrainCamera = constrain;
 	}
 
+	void SetFOV(const float) override;
+
 private:
 	CVector3D GetSmoothPivot(CCamera &camera) const;
 	void ResetCameraAngleZoom();
@@ -106,6 +108,8 @@ private:
 	float m_ViewZoomDefault;
 	float m_ViewZoomSpeedModifier;
 	float m_ViewFOV;
+	float m_ViewFOVMin;
+	float m_ViewFOVMax;
 	float m_ViewNear;
 	float m_ViewFar;
 	float m_HeightSmoothness;

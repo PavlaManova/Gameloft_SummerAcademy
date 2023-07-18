@@ -388,6 +388,15 @@
 					{ "value": 8, "label": "8x", "tooltip": "8x" },
 					{ "value": 16, "label": "16x", "tooltip": "16x" }
 				]
+			},
+			{
+				"type": "slider",
+				"label": "Camera FOV",
+				"tooltip": "Toggles the camera's filed of view which results in different perspective projection.",
+				"config": "view.fov",
+				"function": "SetFOV",
+				"min": 20,
+				"max": 120
 			}
 		]
 	},

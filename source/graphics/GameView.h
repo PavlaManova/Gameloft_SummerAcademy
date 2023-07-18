@@ -21,6 +21,7 @@
 #include "renderer/backend/IDeviceCommandContext.h"
 #include "renderer/Scene.h"
 #include "simulation2/system/Entity.h"
+#include "CameraController.h"
 
 #include "lib/input.h" // InReaction - can't forward-declare enum
 
@@ -65,6 +66,7 @@ public:
 	float GetCameraZoom() const;
 
 	void SetCamera(const CVector3D& pos, float rotX, float rotY, float zoom);
+	void SetCameraFov(const float);
 	void MoveCameraTarget(const CVector3D& target);
 	void ResetCameraTarget(const CVector3D& target);
 	void FollowEntity(entity_id_t entity, bool firstPerson);

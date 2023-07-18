@@ -24,6 +24,9 @@
 #include "ps/VideoMode.h"
 #include "scriptinterface/FunctionWrapper.h"
 #include "scriptinterface/ScriptRequest.h"
+#include "graphics/CameraController.h"
+#include "ps/Game.h"
+#include "graphics/GameView.h"
 
 #include <string>
 #include <unordered_set>
@@ -207,6 +210,13 @@ void SetGUIScale(float scale)
 	g_VideoMode.Rescale(scale);
 }
 
+void SetFOV(float newVal)
+{
+	if (!g_Game || !g_Game->GetView())
+		return;
+	g_Game->GetView()->SetCameraFov(DEGTORAD(newVal));
+}
+
 void RegisterScriptFunctions(const ScriptRequest& rq)
 {
 	ScriptFunction::Register<&HasChanges>(rq, "ConfigDB_HasChanges");
@@ -222,5 +232,6 @@ void RegisterScriptFunctions(const ScriptRequest& rq)
 	ScriptFunction::Register<&Reload>(rq, "ConfigDB_Reload");
 	ScriptFunction::Register<&PauseOnFocusLoss>(rq, "PauseOnFocusLoss");
 	ScriptFunction::Register<&SetGUIScale>(rq, "SetGUIScale");
+	ScriptFunction::Register<&SetFOV>(rq, "SetFOV");
 }
 }

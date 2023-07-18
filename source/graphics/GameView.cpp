@@ -334,6 +334,11 @@ void CGameView::SetCamera(const CVector3D& pos, float rotX, float rotY, float zo
 	m->CameraController->SetCamera(pos, rotX, rotY, zoom);
 }
 
+void CGameView::SetCameraFov(const float newVal)
+{
+	m->CameraController->SetFOV(newVal);
+}
+
 void CGameView::MoveCameraTarget(const CVector3D& target)
 {
 	m->CameraController->MoveCameraTarget(target);

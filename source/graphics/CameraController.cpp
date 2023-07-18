@@ -143,11 +143,15 @@ void CCameraController::LoadConfig()
 	CFG_GET_VAL("view.near", m_ViewNear);
 	CFG_GET_VAL("view.far", m_ViewFar);
 	CFG_GET_VAL("view.fov", m_ViewFOV);
+	CFG_GET_VAL("view.fov.min", m_ViewFOVMin);
+	CFG_GET_VAL("view.fov.max", m_ViewFOVMax);
 
 	// Convert to radians
 	m_RotateX.SetValue(DEGTORAD(m_ViewRotateXDefault));
 	m_RotateY.SetValue(DEGTORAD(m_ViewRotateYDefault));
 	m_ViewFOV = DEGTORAD(m_ViewFOV);
+	m_ViewFOVMin = DEGTORAD(m_ViewFOVMin);
+	m_ViewFOVMax = DEGTORAD(m_ViewFOVMax);
 }
 
 void CCameraController::SetViewport(const SViewPort& vp)
@@ -691,9 +695,29 @@ InReaction CCameraController::HandleEvent(const SDL_Event_* ev)
 			LOGMESSAGERENDER(g_L10n.Translate("Zoom speed decreased to %.1f"), m_ViewZoomSpeed);
 			return IN_HANDLED;
 		}
+		else if (hotkey == "camera.fovX.increase")
+		{
+			//Clamp
+			m_ViewFOV + 0.1f < m_ViewFOVMax ? m_ViewFOV+=0.1f : 0;
+			return IN_HANDLED;
+		}
+		else if (hotkey == "camera.fovX.decrease")
+		{
+			//Clamp
+			m_ViewFOV - 0.1f > m_ViewFOVMin ? m_ViewFOV -= 0.1f : 0;
+			return IN_HANDLED;
+		}
 		return IN_PASS;
 	}
 	}
 
 	return IN_PASS;
+}
+
+void CCameraController::SetFOV(const float newValue)
+{
+	if (newValue <= m_ViewFOVMax && newValue >= m_ViewFOVMin)
+	{
+		m_ViewFOV = newValue;
+	}
 }
