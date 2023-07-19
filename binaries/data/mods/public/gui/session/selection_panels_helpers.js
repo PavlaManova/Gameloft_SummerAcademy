@@ -248,23 +248,11 @@ function jumpCamera(index) {
 	if (g_JumpCameraLastPos &&
 		Math.abs(cameraPivot.x - position.x) < threshold &&
 		Math.abs(cameraPivot.z - position.z) < threshold) {
-		// error(1);
 		Engine.SetCameraData(g_JumpCameraLastPos.x, g_JumpCameraLastPos.y, g_JumpCameraLastPos.z,
 			g_JumpCameraRotationLast.x, g_JumpCameraRotationLast.y,
 			g_JumpCameraZoomLast, g_JumpCameraFOVLast);
 	}
 	else {
-
-		//  &&
-		// 	Math.abs(cameraPivot.x - g_JumpCameraLastPos.x) < threshold &&
-		// 	Math.abs(cameraPivot.z - g_JumpCameraLastPos.z) < threshold));
-		// error(Math.abs(cameraPivot.x - position[0]) < threshold);
-		// error(Math.abs(cameraPivot.z - position[2]) < threshold);
-
-		// var posData = [];
-		// posData.push(Engine.GetCameraPosition().x, Engine.GetCameraPosition().y, Engine.GetCameraPosition().z, Engine.GetCameraRotation().x,
-		// 	Engine.GetCameraRotation().y, Engine.GetCameraZoom(), Engine.GetCameraFOV());
-		// g_JumpCameraLastData = posData;
 		g_JumpCameraLastPos = Engine.GetCameraPosition();
 		g_JumpCameraFOVLast = Engine.GetCameraFOV();
 		g_JumpCameraZoomLast = Engine.GetCameraZoom();
@@ -277,11 +265,6 @@ function jumpCamera(index) {
 }
 
 function setJumpCamera(index) {
-
-	// var posData = [];
-
-	// posData.push(Engine.GetCameraPosition().x, Engine.GetCameraPosition().y, Engine.GetCameraPosition().z, Engine.GetCameraRotation().x, Engine.GetCameraRotation().y, Engine.GetCameraZoom(),
-	// 	Engine.GetCameraFOV());
 	g_JumpCameraPositions[index] = Engine.GetCameraPosition();
 	g_JumpCameraRotations[index] = Engine.GetCameraRotation();
 	g_JumpCameraZoom[index] = Engine.GetCameraZoom();
