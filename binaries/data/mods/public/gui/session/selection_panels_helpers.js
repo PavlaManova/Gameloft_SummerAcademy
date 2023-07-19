@@ -253,14 +253,15 @@ function jumpCamera(index) {
 			g_JumpCameraZoomLast, g_JumpCameraFOVLast);
 	}
 	else {
+		
 		g_JumpCameraLastPos = Engine.GetCameraPosition();
-		g_JumpCameraFOVLast = Engine.GetCameraFOV();
-		g_JumpCameraZoomLast = Engine.GetCameraZoom();
 		g_JumpCameraRotationLast = Engine.GetCameraRotation();
-
+		g_JumpCameraZoomLast = Engine.GetCameraZoom();
+		g_JumpCameraFOVLast = Engine.GetCameraFOV();		
 		Engine.SetCameraData(position.x, position.y, position.z,
-			rotation.x, rotation.y,
-			zoom, fov);
+					rotation.x, rotation.y,
+					zoom, fov);
+		
 	}
 }
 

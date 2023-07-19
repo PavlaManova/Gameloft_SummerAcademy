@@ -123,6 +123,7 @@ private:
 	CSmoothedValue m_Zoom;
 	CSmoothedValue m_RotateX; // inclination around x axis (relative to camera)
 	CSmoothedValue m_RotateY; // rotation around y (vertical) axis
+	CSmoothedValue m_ViewFOVSmooth;
 };
 
 #endif // INCLUDED_CAMERACONTROLLER
