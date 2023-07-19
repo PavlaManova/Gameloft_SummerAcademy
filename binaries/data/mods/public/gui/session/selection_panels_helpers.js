@@ -251,17 +251,18 @@ function jumpCamera(index) {
 		Engine.SetCameraData(g_JumpCameraLastPos.x, g_JumpCameraLastPos.y, g_JumpCameraLastPos.z,
 			g_JumpCameraRotationLast.x, g_JumpCameraRotationLast.y,
 			g_JumpCameraZoomLast, g_JumpCameraFOVLast);
+		;
 	}
 	else {
-		
 		g_JumpCameraLastPos = Engine.GetCameraPosition();
 		g_JumpCameraRotationLast = Engine.GetCameraRotation();
 		g_JumpCameraZoomLast = Engine.GetCameraZoom();
-		g_JumpCameraFOVLast = Engine.GetCameraFOV();		
+		g_JumpCameraFOVLast = Engine.GetCameraFOV();
+		error(position.x);
 		Engine.SetCameraData(position.x, position.y, position.z,
-					rotation.x, rotation.y,
-					zoom, fov);
-		
+			rotation.x, rotation.y,
+			zoom, fov);
+
 	}
 }
 

@@ -42,6 +42,7 @@ public:
 	void ResetCameraTarget(const CVector3D& target) override;
 	void FollowEntity(entity_id_t entity, bool firstPerson) override;
 	entity_id_t GetFollowedEntity() override;
+	void IsJumping() override;
 
 	void Update(const float deltaRealTime) override;
 	void SetViewport(const SViewPort& vp) override;
@@ -87,6 +88,7 @@ private:
 	* Whether to follow FollowEntity in first-person mode.
 	*/
 	bool m_FollowFirstPerson;
+	bool m_IsJumping;
 
 	// Settings
 	float m_ViewScrollSpeed;

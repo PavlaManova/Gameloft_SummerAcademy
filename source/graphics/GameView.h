@@ -68,6 +68,7 @@ public:
 	void SetCamera(const CVector3D& pos, float rotX, float rotY, float zoom);
 	void SetCameraFov(const float);
 	float GetCameraFov();
+	void IsJumping();
 	void MoveCameraTarget(const CVector3D& target);
 	void ResetCameraTarget(const CVector3D& target);
 	void FollowEntity(entity_id_t entity, bool firstPerson);

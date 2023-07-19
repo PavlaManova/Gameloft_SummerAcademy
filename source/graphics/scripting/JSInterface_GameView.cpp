@@ -153,6 +153,7 @@ void SetCameraData(entity_pos_t x, entity_pos_t y, entity_pos_t z, entity_pos_t 
 
 	g_Game->GetView()->SetCamera(pos, rotx.ToFloat(), roty.ToFloat(), zoom.ToFloat());
 	g_Game->GetView()->SetCameraFov(fov);
+	g_Game->GetView()->IsJumping();
 }
 
 float GetCameraFOV()
@@ -199,6 +200,7 @@ CFixedVector3D GetTerrainAtScreenPoint(int x, int y)
 	CVector3D pos = g_Game->GetView()->GetCamera()->GetWorldCoordinates(x, y, true);
 	return CFixedVector3D(fixed::FromFloat(pos.X), fixed::FromFloat(pos.Y), fixed::FromFloat(pos.Z));
 }
+
 
 void RegisterScriptFunctions(const ScriptRequest& rq)
 {

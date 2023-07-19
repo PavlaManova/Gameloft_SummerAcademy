@@ -319,6 +319,11 @@ CVector3D CGameView::GetCameraPosition() const
 	return m->CameraController->GetCameraPosition();
 }
 
+void CGameView::IsJumping()
+{
+	m->CameraController->IsJumping();
+}
+
 CVector3D CGameView::GetCameraRotation() const
 {
 	return m->CameraController->GetCameraRotation();

@@ -54,6 +54,7 @@ CCameraController::CCameraController(CCamera& camera)
 	m_ConstrainCamera(true),
 	m_FollowEntity(INVALID_ENTITY),
 	m_FollowFirstPerson(false),
+	m_IsJumping(false),
 
 	// Dummy values (these will be filled in by the config file)
 	m_ViewScrollSpeed(0),
@@ -84,8 +85,8 @@ CCameraController::CCameraController(CCamera& camera)
 	m_PosY(0, 0, 0.01f),
 	m_PosZ(0, 0, 0.01f),
 	m_Zoom(0, 0, 0.01f),
-	m_RotateX(0, 0, 0.01f),
-	m_RotateY(0, 0, 0.01f),
+	m_RotateX(0, 0, 0.001f),
+	m_RotateY(0, 0, 0.001f),
 	m_ViewFOVSmooth(0, 0, 0.001f)
 {
 	SViewPort vp;
@@ -338,7 +339,11 @@ void CCameraController::Update(const float deltaRealTime)
 		SetupCameraMatrixSmooth(&targetCam.m_Orientation);
 
 		float rotateYDelta = m_RotateY.Update(deltaRealTime);
-		if (rotateYDelta)
+		if (m_RotateY.GetValue() == m_RotateY.GetSmoothedValue())
+		{
+			m_IsJumping = false;
+		}
+		if (rotateYDelta && !m_IsJumping)
 		{
 			// We've updated RotateY, and need to adjust Pos so that it's still
 			// facing towards the original focus point (the terrain in the center
@@ -437,16 +442,17 @@ float CCameraController::GetCameraZoom() const
 
 void CCameraController::SetCamera(const CVector3D& pos, float rotX, float rotY, float zoom)
 {
+	m_RotateX.SetValueSmoothly(rotX);
+	m_RotateY.SetValueSmoothly(rotY);
+	m_Zoom.SetValueSmoothly(zoom);
 	m_PosX.SetValueSmoothly(pos.X);
 	m_PosY.SetValueSmoothly(pos.Y);
 	m_PosZ.SetValueSmoothly(pos.Z);
-	m_RotateX.SetValue(rotX);
-	m_RotateY.SetValue(rotY);
-	m_Zoom.SetValue(zoom);
+	
 
 	FocusHeight(false);
 
-	SetupCameraMatrixSmooth(&m_Camera.m_Orientation);
+	SetupCameraMatrixNonSmooth(&m_Camera.m_Orientation);
 	m_Camera.UpdateFrustum();
 
 	// Break out of following mode so the camera really moves to the target
@@ -497,6 +503,11 @@ void CCameraController::ResetCameraTarget(const CVector3D& target)
 
 	// Break out of following mode so the camera really moves to the target
 	m_FollowEntity = INVALID_ENTITY;
+}
+
+void CCameraController::IsJumping()
+{
+	m_IsJumping = true;
 }
 
 void CCameraController::FollowEntity(entity_id_t entity, bool firstPerson)
